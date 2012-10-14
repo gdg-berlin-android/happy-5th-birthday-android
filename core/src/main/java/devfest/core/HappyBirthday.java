@@ -9,6 +9,7 @@ import playn.core.Key;
 import playn.core.Keyboard;
 import playn.core.Keyboard.Event;
 import playn.core.PlayN;
+import playn.core.Pointer;
 
 public class HappyBirthday implements Game {
 
@@ -104,8 +105,19 @@ public class HappyBirthday implements Game {
             player1.currentField--;
             player1.move();
           }
-
         }
+      }
+    });
+
+    PlayN.pointer().setListener(new Pointer.Adapter() {
+      @Override
+      public void onPointerEnd(final playn.core.Pointer.Event event) {
+        if (player1.currentField < fields.length - 1) {
+          player1.currentField++;
+        } else if (player1.currentField > 0) {
+          player1.currentField--;
+        }
+        player1.move();
       }
     });
 
