@@ -95,8 +95,16 @@ public class HappyBirthday implements Game {
       @Override
       public void onKeyDown(final Event event) {
         if (event.key() == Key.UP) {
-          player1.currentField++;
-          player1.move();
+          if (player1.currentField < fields.length - 1) {
+            player1.currentField++;
+            player1.move();
+          }
+        } else if (event.key() == Key.DOWN) {
+          if (player1.currentField > 0) {
+            player1.currentField--;
+            player1.move();
+          }
+
         }
       }
     });
