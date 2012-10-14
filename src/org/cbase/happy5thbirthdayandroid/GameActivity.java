@@ -1,11 +1,12 @@
 package org.cbase.happy5thbirthdayandroid;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+
 
 public class GameActivity extends Activity {
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -14,8 +15,13 @@ public class GameActivity extends Activity {
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.activity_game, menu);
+    MenuItem actionItem = menu.add(R.string.menu_start);
+    actionItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
     return true;
   }
 
