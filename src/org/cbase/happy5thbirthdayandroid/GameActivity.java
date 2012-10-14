@@ -1,7 +1,11 @@
 package org.cbase.happy5thbirthdayandroid;
 
+import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
+import org.andengine.engine.options.ScreenOrientation;
+import org.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 import org.andengine.entity.scene.Scene;
+import org.andengine.opengl.view.RenderSurfaceView;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import android.os.Bundle;
@@ -25,7 +29,13 @@ public class GameActivity extends BaseGameActivity {
   @Override
   public EngineOptions onCreateEngineOptions() {
     // TODO Auto-generated method stub
-    return null;
+    return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new IResolutionPolicy() {
+      
+      @Override
+      public void onMeasure(RenderSurfaceView arg0, int arg1, int arg2) {
+        //TODO implement
+      }
+    }, new Camera(0, 0, 2000, 1427));
   }
 
   @Override
