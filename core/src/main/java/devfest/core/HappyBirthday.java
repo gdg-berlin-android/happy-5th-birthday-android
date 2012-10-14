@@ -50,6 +50,7 @@ public class HappyBirthday implements Game {
 
   float factorWidth;
   float factorHeight;
+  boolean up = true;
 
   @Override
   public void init() {
@@ -112,11 +113,20 @@ public class HappyBirthday implements Game {
     PlayN.pointer().setListener(new Pointer.Adapter() {
       @Override
       public void onPointerEnd(final playn.core.Pointer.Event event) {
-        if (player1.currentField < fields.length - 1) {
-          player1.currentField++;
-        } else if (player1.currentField > 0) {
-          player1.currentField--;
+        if (up) {
+          if (player1.currentField < fields.length - 1) {
+            player1.currentField++;
+          } else {
+            up = false;
+          }
+        } else {
+          if (player1.currentField > 0) {
+            player1.currentField--;
+          } else {
+            up = true;
+          }
         }
+
         player1.move();
       }
     });
