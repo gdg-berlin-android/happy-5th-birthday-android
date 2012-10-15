@@ -2,12 +2,14 @@ package devfest.core;
 
 import static playn.core.PlayN.assets;
 import static playn.core.PlayN.graphics;
+import static playn.core.PlayN.platformType;
 import playn.core.Game;
 import playn.core.Image;
 import playn.core.ImageLayer;
 import playn.core.Key;
 import playn.core.Keyboard;
 import playn.core.Keyboard.Event;
+import playn.core.Platform.Type;
 import playn.core.PlayN;
 import playn.core.Pointer;
 
@@ -37,59 +39,39 @@ public class HappyBirthday implements Game {
     public Point() {
       Image image = assets().getImage("images/player_blue_n.png");
       imageLayer = graphics().createImageLayer(image);
-      imageLayer.setScale(0.3f);
       move();
       graphics().rootLayer().add(imageLayer);
     }
 
     public void move() {
-      imageLayer.setTranslation(fields[currentField].x * factorWidth, fields[currentField].y * factorHeight);
+      imageLayer.setTranslation(fields[currentField].x, fields[currentField].y);
     }
 
   }
 
-  float factorWidth;
-  float factorHeight;
   boolean up = true;
 
   @Override
   public void init() {
-    // graphics().setSize(graphics().screenWidth(), graphics().screenHeight());
-    graphics().setSize(800, 600);
+    if (platformType() != Type.JAVA) {
+      // Resize to the available resolution on the current device
+      graphics().setSize(graphics().screenWidth(), graphics().screenHeight());
+    } else {
+      // Use 800x600 for the Java backend for now. Good for testing
+      graphics().setSize(800, 600);
+    }
 
     Image bgImage = assets().getImage("images/map_2000px.jpg");
-    float imageWidth = bgImage.width();
-    float imageHeight = bgImage.height();
 
-    PlayN.log().info("iw" + imageWidth);
-    PlayN.log().info("ih" + imageHeight);
+    // Fit to the available screen without stretching
+    graphics().rootLayer().setScale(
+        Math.min(graphics().width() / bgImage.width(), graphics().height() / bgImage.height()));
+    graphics().rootLayer().setScale(graphics().width() / bgImage.width(),
+        graphics().height() / bgImage.height());
 
-    float screenWidth = graphics().width();
-    float screenHeight = graphics().height();
-
-    PlayN.log().info("sw" + screenWidth);
-    PlayN.log().info("sh" + screenHeight);
-
-    factorWidth = screenWidth / imageWidth;
-    factorHeight = screenHeight / imageHeight;
-
-    PlayN.log().info("fx" + factorWidth);
-    PlayN.log().info("fy" + factorHeight);
-
+    // Add the playing field as background
     ImageLayer bgLayer = graphics().createImageLayer(bgImage);
-    bgLayer.setScale(factorWidth, factorHeight);
     graphics().rootLayer().add(bgLayer);
-
-    // PlayN.pointer().setListener(new Pointer.Adapter() {
-    // @Override
-    // public void onPointerEnd(final Pointer.Event event) {
-    // Point point = new Point(event.x(), event.y());
-    // }
-    // });
-
-    // for (Feld feld : fields) {
-    // Point point = new Point(feld.x, feld.y);
-    // }
 
     final Point player1 = new Point();
 
