@@ -32,24 +32,25 @@ public class HappyBirthday implements Game {
 
   class Point {
 
-    Image image;
     ImageLayer imageLayer;
     int currentField = 0;
 
     public Point() {
-      Image image = assets().getImage("images/player_blue_n.png");
-      imageLayer = graphics().createImageLayer(image);
+
+      imageLayer = graphics().createImageLayer(playerImage);
       move();
       graphics().rootLayer().add(imageLayer);
     }
 
     public void move() {
-      imageLayer.setTranslation(fields[currentField].x, fields[currentField].y);
+      imageLayer.setTranslation(fields[currentField].x - playerImage.width() / 2, fields[currentField].y
+          - playerImage.height() + 50);
     }
 
   }
 
   boolean up = true;
+  Image playerImage;
 
   @Override
   public void init() {
@@ -62,12 +63,11 @@ public class HappyBirthday implements Game {
     }
 
     Image bgImage = assets().getImage("images/map_2000px.jpg");
+    playerImage = assets().getImage("images/player_blue_n.png");
 
     // Fit to the available screen without stretching
     graphics().rootLayer().setScale(
         Math.min(graphics().width() / bgImage.width(), graphics().height() / bgImage.height()));
-    graphics().rootLayer().setScale(graphics().width() / bgImage.width(),
-        graphics().height() / bgImage.height());
 
     // Add the playing field as background
     ImageLayer bgLayer = graphics().createImageLayer(bgImage);
