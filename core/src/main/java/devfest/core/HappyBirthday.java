@@ -21,27 +21,34 @@ public class HappyBirthday implements Game {
       new Vector(365, 1209), new Vector(429, 1250), new Vector(511, 1262)
   };
 
-  class Point {
+  static class Player {
 
-    ImageLayer imageLayer;
-    int currentField = 0;
+    private final Vector[] world;
+    private final Image playerImage;
+    private final ImageLayer playerLayer;
+    private int position = 0;
 
-    public Point() {
-
-      imageLayer = graphics().createImageLayer(playerImage);
-      move();
-      graphics().rootLayer().add(imageLayer);
+    public Player(final Vector[] world, final Image playerImage) {
+      this.world = world;
+      this.playerImage = playerImage;
+      this.playerLayer = graphics().createImageLayer(playerImage);
+      setPosition(0);
+      graphics().rootLayer().add(playerLayer);
     }
 
-    public void move() {
-      imageLayer.setTranslation(fields[currentField].x - playerImage.width() / 2, fields[currentField].y
-          - playerImage.height() + 50);
+    public void move(final int offset) {
+      setPosition(position + offset);
+    }
+
+    private void setPosition(final int position) {
+      this.position = position;
+      playerLayer.setTranslation(world[position].x - playerImage.width() / 2,
+          world[position].y - playerImage.height() + 50);
     }
 
   }
 
   boolean up = true;
-  Image playerImage;
 
   @Override
   public void init() {
@@ -53,8 +60,12 @@ public class HappyBirthday implements Game {
       graphics().setSize(800, 600);
     }
 
-    Image bgImage = assets().getImage("images/map_2000px.jpg");
-    playerImage = assets().getImage("images/player_blue_n.png");
+    // Load assets
+    final Image bgImage = assets().getImage("images/map_2000px.jpg");
+    final Image bluePlayerImage = assets().getImage("images/player_blue_n.png");
+    final Image purplePlayerImage = assets().getImage("images/player_purple_n.png");
+    final Image redPlayerImage = assets().getImage("images/player_red_n.png");
+    final Image yellowPlayerImage = assets().getImage("images/player_yellow_n.png");
 
     // Fit to the available screen without stretching
     graphics().rootLayer().setScale(
@@ -64,20 +75,22 @@ public class HappyBirthday implements Game {
     ImageLayer bgLayer = graphics().createImageLayer(bgImage);
     graphics().rootLayer().add(bgLayer);
 
-    final Point player1 = new Point();
+    // Initialize players
+    final Player bluePlayer = new Player(fields, bluePlayerImage);
+    final Player purplePlayer = new Player(fields, purplePlayerImage);
+    final Player redPlayer = new Player(fields, redPlayerImage);
+    final Player yellowPlayer = new Player(fields, yellowPlayerImage);
 
     PlayN.keyboard().setListener(new Keyboard.Adapter() {
       @Override
       public void onKeyDown(final Event event) {
         if (event.key() == Key.UP) {
-          if (player1.currentField < fields.length - 1) {
-            player1.currentField++;
-            player1.move();
+          if (bluePlayer.position < fields.length - 1) {
+            bluePlayer.move(1);
           }
         } else if (event.key() == Key.DOWN) {
-          if (player1.currentField > 0) {
-            player1.currentField--;
-            player1.move();
+          if (bluePlayer.position > 0) {
+            bluePlayer.move(-1);
           }
         }
       }
@@ -87,20 +100,18 @@ public class HappyBirthday implements Game {
       @Override
       public void onPointerEnd(final playn.core.Pointer.Event event) {
         if (up) {
-          if (player1.currentField < fields.length - 1) {
-            player1.currentField++;
+          if (purplePlayer.position < fields.length - 1) {
+            purplePlayer.move(1);
           } else {
             up = false;
           }
         } else {
-          if (player1.currentField > 0) {
-            player1.currentField--;
+          if (purplePlayer.position > 0) {
+            purplePlayer.move(-1);
           } else {
             up = true;
           }
         }
-
-        player1.move();
       }
     });
 
