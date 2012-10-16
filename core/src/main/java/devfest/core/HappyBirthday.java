@@ -18,7 +18,8 @@ public class HappyBirthday implements Game {
 
   Vector[] fields = {
       new Vector(100, 1265), new Vector(179, 1250), new Vector(246, 1234), new Vector(305, 1234),
-      new Vector(365, 1209), new Vector(429, 1250), new Vector(511, 1262)
+      new Vector(365, 1209), new Vector(429, 1250), new Vector(511, 1262), new Vector(580, 1265),
+      new Vector(653, 1259), new Vector(722, 1234), new Vector(791, 1206), new Vector(880, 1180)
   };
 
   static class Player {
