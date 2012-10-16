@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package devfest.html;
+package devfest.core;
 
-import playn.core.PlayN;
-import playn.html.HtmlGame;
-import playn.html.HtmlPlatform;
-import devfest.core.HappyBirthday;
+import pythagoras.f.Vector;
 
 
-public class HappyBirthdayHtml extends HtmlGame {
-  @Override
-  public void start() {
-    HtmlPlatform platform = HtmlPlatform.register();
-    platform.assets().setPathPrefix("happybirthday/");
-    PlayN.run(new HappyBirthday());
+public class Field extends Vector {
+  public final int jumpTo;
+
+  public Field(float x, float y) {
+    this(x, y, -1);
   }
+
+  public Field(float x, float y, int jumpTo) {
+    super(x, y);
+    this.jumpTo = jumpTo;
+  }
+
 }
