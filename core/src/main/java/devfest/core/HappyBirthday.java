@@ -12,22 +12,13 @@ import playn.core.Keyboard.Event;
 import playn.core.Platform.Type;
 import playn.core.PlayN;
 import playn.core.Pointer;
+import pythagoras.f.Vector;
 
 public class HappyBirthday implements Game {
 
-  class Feld {
-    final int x;
-    final int y;
-
-    public Feld(final int x, final int y) {
-      this.x = x;
-      this.y = y;
-    }
-  }
-
-  Feld[] fields = {
-      new Feld(100, 1265), new Feld(179, 1250), new Feld(246, 1234), new Feld(305, 1234),
-      new Feld(365, 1209), new Feld(429, 1250), new Feld(511, 1262)
+  Vector[] fields = {
+      new Vector(100, 1265), new Vector(179, 1250), new Vector(246, 1234), new Vector(305, 1234),
+      new Vector(365, 1209), new Vector(429, 1250), new Vector(511, 1262)
   };
 
   class Point {
