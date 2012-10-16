@@ -32,12 +32,6 @@ import playn.core.Pointer;
 
 
 public class HappyBirthday implements Game {
-  Field[] fields = {
-    new Field(100, 1265), new Field(179, 1250), new Field(246, 1234), new Field(305, 1234, 10),
-    new Field(365, 1209), new Field(429, 1250), new Field(511, 1262), new Field(580, 1265),
-    new Field(653, 1259), new Field(722, 1234), new Field(791, 1206, 3), new Field(880, 1180)
-  };
-
   boolean up = true;
   Random rnd = new Random();
 
@@ -92,17 +86,17 @@ public class HappyBirthday implements Game {
         @Override
         public void onPointerEnd(final playn.core.Pointer.Event event) {
           if (up) {
-            //            if (purplePlayer.position < (fields.length - 1)) {
-            //              purplePlayer.move(1);
-            //            } else {
-            //              up = false;
-            //            }
+            // if (purplePlayer.position < (fields.length - 1)) {
+            // purplePlayer.move(1);
+            // } else {
+            // up = false;
+            // }
           } else {
-            //            if (purplePlayer.position > 0) {
-            //              purplePlayer.move(-1);
-            //            } else {
-            //              up = true;
-            //            }
+            // if (purplePlayer.position > 0) {
+            // purplePlayer.move(-1);
+            // } else {
+            // up = true;
+            // }
           }
         }
       });
@@ -119,8 +113,6 @@ public class HappyBirthday implements Game {
   }
 
   void move(Player p, int numberFields) {
-    System.out.println("move " + p.playerNumber + " for " + numberFields);
-
     Field field = null;
     for (int i = 1; i <= numberFields; i++) {
       if (p.position < (fields.length - 1)) {
@@ -128,10 +120,9 @@ public class HappyBirthday implements Game {
       } else {
         p.position--;
       }
-      System.out.println("position " + p.position);
       field = fields[p.position];
       p.moveTo(field.x, field.y);
-      //TODO sleeper for moving
+      // TODO sleeper for moving
     }
     if ((field != null) && (field.jumpTo != -1)) {
       p.position = field.jumpTo;
@@ -153,4 +144,27 @@ public class HappyBirthday implements Game {
     return 25;
   }
 
+  Field[] fields = {
+    new Field(100, 1265), new Field(179, 1250), new Field(246, 1234), new Field(305, 1234, 10),
+    new Field(365, 1209), new Field(429, 1250), new Field(511, 1262), new Field(580, 1265), new Field(653, 1259),
+    new Field(722, 1234), new Field(791, 1206, 3), new Field(880, 1180), new Field(981, 1199), new Field(1059, 1215),
+    new Field(1148, 1234, 27), new Field(1239, 1253), new Field(1321, 1256), new Field(1394, 1259),
+    new Field(1492, 1269), new Field(1583, 1247), new Field(1640, 1180), new Field(1706, 1117),
+    new Field(1697, 1000), new Field(1603, 940, 63), new Field(1528, 900), new Field(1436, 868, 30),
+    new Field(1346, 920), new Field(1251, 913, 14), new Field(1147, 900), new Field(1069, 898), new Field(980, 908),
+    new Field(902, 965), new Field(820, 955), new Field(568, 775), new Field(503, 720), new Field(456, 691),
+    new Field(386, 643, 91), new Field(316, 626), new Field(262, 681), new Field(172, 743), new Field(162, 823),
+    new Field(209, 900), new Field(241, 977), new Field(299, 1022), new Field(399, 997, 54), new Field(478, 972),
+    new Field(548, 945), new Field(601, 870), new Field(650, 805), new Field(700, 765), new Field(755, 745),
+    new Field(815, 720), new Field(870, 671, 89), new Field(952, 663), new Field(1029, 648, 44),
+    new Field(1119, 618), new Field(1226, 638), new Field(1279, 666), new Field(1344, 691, 68), new Field(1426, 720),
+    new Field(1486, 715), new Field(1548, 703), new Field(1593, 663), new Field(1630, 596, 23), new Field(1663, 526),
+    new Field(1683, 441), new Field(1665, 391), new Field(1618, 351), new Field(1543, 306, 58), new Field(1463, 284),
+    new Field(1384, 289), new Field(1326, 284), new Field(1269, 281), new Field(1216, 321), new Field(1229, 389),
+    new Field(1236, 466), new Field(1204, 533), new Field(1122, 513), new Field(1052, 483), new Field(987, 456),
+    new Field(955, 386), new Field(970, 316), new Field(982, 239), new Field(947, 162), new Field(877, 169),
+    new Field(815, 189), new Field(758, 222), new Field(713, 269), new Field(658, 316), new Field(615, 379, 52),
+    new Field(546, 414), new Field(486, 431, 36), new Field(421, 436), new Field(369, 409), new Field(321, 351),
+    new Field(314, 276), new Field(306, 194)
+  };
 }
