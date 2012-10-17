@@ -109,17 +109,17 @@ public class HappyBirthday implements Game {
   void move(Player p, int numberFields) {
     Field field = null;
     for (int i = 1; i <= numberFields; i++) {
-      if (p.position < (fields.length - 1)) {
-        p.position++;
-      } else {
-        p.position--;
-      }
-      field = fields[p.position];
+      //      if (p.position < (fields.length - 1)) {
+      //        p.position++;
+      //      } else {
+      //        p.position--;
+      //      }
+      //      field = fields[p.position];
       p.moveTo(field.x, field.y);
       // TODO sleeper for moving
     }
     if ((field != null) && (field.jumpTo != -1)) {
-      p.position = field.jumpTo;
+      //      p.position = field.jumpTo;
       field = fields[field.jumpTo];
       p.moveTo(field.x, field.y);
     }

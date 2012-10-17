@@ -21,6 +21,8 @@ import pythagoras.f.Vector;
 
 public class Field extends Vector {
   public final int jumpTo;
+  static int createdItems = 0;
+  public final int position;
 
   public Field(float x, float y) {
     this(x, y, -1);
@@ -29,6 +31,7 @@ public class Field extends Vector {
   public Field(float x, float y, int jumpTo) {
     super(x, y);
     this.jumpTo = jumpTo;
+    this.position = createdItems++;
   }
 
 }
