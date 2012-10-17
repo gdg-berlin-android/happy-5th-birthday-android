@@ -83,20 +83,14 @@ public class HappyBirthday implements Game {
       });
 
     PlayN.pointer().setListener(new Pointer.Adapter() {
+        int playerNumber = 0;
+
         @Override
         public void onPointerEnd(final playn.core.Pointer.Event event) {
-          if (up) {
-            // if (purplePlayer.position < (fields.length - 1)) {
-            // purplePlayer.move(1);
-            // } else {
-            // up = false;
-            // }
-          } else {
-            // if (purplePlayer.position > 0) {
-            // purplePlayer.move(-1);
-            // } else {
-            // up = true;
-            // }
+          final Player player = players[playerNumber++];
+          move(player, rnd.nextInt(6) + 1);
+          if (playerNumber > 3) {
+            playerNumber = 0;
           }
         }
       });
