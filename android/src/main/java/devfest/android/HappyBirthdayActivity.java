@@ -16,15 +16,34 @@
 
 package devfest.android;
 
+import android.view.KeyEvent;
 import playn.android.GameActivity;
 import playn.core.PlayN;
 import devfest.core.HappyBirthday;
 
-
 public class HappyBirthdayActivity extends GameActivity {
+
   @Override
   public void main() {
     platform().assets().setPathPrefix("devfest/resources");
     PlayN.run(new HappyBirthday());
   }
+
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_BACK) {
+      finish();
+    }
+
+    return super.onKeyDown(keyCode, event);
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+
+    System.runFinalizersOnExit(true);
+    System.exit(0);
+  }
+
 }
