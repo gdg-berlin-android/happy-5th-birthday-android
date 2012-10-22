@@ -34,6 +34,11 @@ import playn.core.Pointer;
 public class HappyBirthday implements Game {
   boolean up = true;
   Random rnd = new Random();
+  int currentPlayerPosition;
+  boolean isMoving;
+  Player[] players;
+  float cumulativDelta;
+  int jumps;
 
   @Override
   public void init() {
@@ -60,41 +65,37 @@ public class HappyBirthday implements Game {
     ImageLayer bgLayer = graphics().createImageLayer(bgImage);
     graphics().rootLayer().add(bgLayer);
 
-    // Initialize players
-    final Player[] players = createPlayers(bluePlayerImage, purplePlayerImage, redPlayerImage, yellowPlayerImage);
+    players = createPlayers(bluePlayerImage, purplePlayerImage, redPlayerImage, yellowPlayerImage);
 
     PlayN.keyboard().setListener(new Keyboard.Adapter() {
         @Override
         public void onKeyDown(final Event event) {
-          Player player = null;
-          if (event.key() == Key.UP) {
-            player = players[0];
-          } else if (event.key() == Key.DOWN) {
-            player = players[1];
-          } else if (event.key() == Key.LEFT) {
-            player = players[2];
-          } else if (event.key() == Key.RIGHT) {
-            player = players[3];
-          }
-          if (player != null) {
-            move(player, rnd.nextInt(6) + 1);
+          if ((event.key() == Key.UP) || (event.key() == Key.DOWN) || (event.key() == Key.LEFT) ||
+              (event.key() == Key.RIGHT)) {
+            checkPlayer();
           }
         }
       });
 
     PlayN.pointer().setListener(new Pointer.Adapter() {
-        int playerNumber = 0;
-
         @Override
         public void onPointerEnd(final playn.core.Pointer.Event event) {
-          final Player player = players[playerNumber++];
-          move(player, rnd.nextInt(6) + 1);
-          if (playerNumber > 3) {
-            playerNumber = 0;
-          }
+          checkPlayer();
         }
       });
 
+  }
+
+  void checkPlayer() {
+    if (!isMoving) {
+      isMoving = true;
+
+      Player player = players[currentPlayerPosition++];
+      if (currentPlayerPosition > 3) {
+        currentPlayerPosition = 0;
+      }
+      jumps = rnd.nextInt(6) + 1;
+    }
   }
 
   private Player[] createPlayers(Image... images) {
@@ -106,22 +107,31 @@ public class HappyBirthday implements Game {
     return players;
   }
 
-  void move(Player p, int numberFields) {
-    Field field = null;
-    for (int i = 1; i <= numberFields; i++) {
-      //      if (p.position < (fields.length - 1)) {
-      //        p.position++;
-      //      } else {
-      //        p.position--;
-      //      }
-      //      field = fields[p.position];
-      p.moveTo(field.x, field.y);
-      // TODO sleeper for moving
+  void moveDelta(float delta) {
+    Player p = players[currentPlayerPosition];
+
+    if (0 == cumulativDelta) {
+      // TODO add check if last field and then ove backward
+      p.nextPosition = fields[p.position.position + 1];
+      System.out.println("change field");
     }
-    if ((field != null) && (field.jumpTo != -1)) {
-      //      p.position = field.jumpTo;
-      field = fields[field.jumpTo];
-      p.moveTo(field.x, field.y);
+    p.moveDelta(cumulativDelta / 250f);
+
+    //TODO add jump to other field (ladder, snake)
+    //    if ((field != null) && (field.jumpTo != -1)) {
+    //      //      p.position = field.jumpTo;
+    //      field = fields[field.jumpTo];
+    //      p.moveTo(field.x, field.y);
+    //    }
+    cumulativDelta += delta;
+    if (cumulativDelta >= 250.0) {
+      jumps--;
+      System.out.println("jump one field)");
+      p.position = p.nextPosition;
+      if (jumps < 1) {
+        isMoving = false;
+      }
+      cumulativDelta = 0;
     }
   }
 
@@ -131,6 +141,9 @@ public class HappyBirthday implements Game {
 
   @Override
   public void update(final float delta) {
+    if (isMoving) {
+      moveDelta(delta);
+    }
   }
 
   @Override
