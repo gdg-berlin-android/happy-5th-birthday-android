@@ -21,7 +21,13 @@ public class Player {
     position = startField;
   }
 
-  public void moveTo(final float x, final float y) {
+  public void moveDelta(final float percentDelta) {
+    float x = nextPosition.x - position.x;
+    float y = nextPosition.y - position.y;
+    moveTo((x * percentDelta) + position.x, (y * percentDelta) + position.y);
+  }
+
+  void moveTo(final float x, final float y) {
     playerLayer.setTranslation(x - (playerImage.width() / 2), y - playerImage.height() + 50);
   }
 
