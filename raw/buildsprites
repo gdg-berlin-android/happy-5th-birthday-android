@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# note: this script requires imagemagick
+# (available in macports too)
+
+
+# build up the player sprite
+
+montage \
+  -background none \
+  -geometry +0+0 \
+  -tile 4x1 \
+  player_blue_n.png \
+  player_purple_n.png \
+  player_red_n.png \
+  player_yellow_n.png \
+  player.png
+  # todo: add player_green_n.png
+  # todo: add player_black_n.png
+
+
+# build up the dice sprite
+
+montage \
+  -background none \
+  -geometry +0+0 \
+  -tile 6x2 \
+  wuerfel_bg_blau.png \
+  wuerfel_bg_pink.png \
+  wuerfel_bg_red.png \
+  wuerfel_bg_yellow.png \
+  wuerfel_bg_gruen.png \
+  wuerfel_bg_schwarz.png \
+  wuerfel_1_transparent.png \
+  wuerfel_2_transparent.png \
+  wuerfel_3_transparent.png \
+  wuerfel_4_transparent.png \
+  wuerfel_5_transparent.png \
+  wuerfel_6_transparent.png \
+  dice.png
