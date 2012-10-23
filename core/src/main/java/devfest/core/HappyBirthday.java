@@ -51,11 +51,8 @@ public class HappyBirthday implements Game {
     }
 
     // Load assets
-    final Image bgImage = assets().getImage("images/map_2000px.jpg");
-    final Image bluePlayerImage = assets().getImage("images/player_blue_n.png");
-    final Image purplePlayerImage = assets().getImage("images/player_purple_n.png");
-    final Image redPlayerImage = assets().getImage("images/player_red_n.png");
-    final Image yellowPlayerImage = assets().getImage("images/player_yellow_n.png");
+    final Image bgImage = assets().getImage("images/map.jpg");
+    final Image playerSpriteImage = assets().getImage("images/player.png");
 
     // Fit to the available screen without stretching
     graphics().rootLayer().setScale(
@@ -65,7 +62,7 @@ public class HappyBirthday implements Game {
     ImageLayer bgLayer = graphics().createImageLayer(bgImage);
     graphics().rootLayer().add(bgLayer);
 
-    players = createPlayers(bluePlayerImage, purplePlayerImage, redPlayerImage, yellowPlayerImage);
+    players = createPlayers(playerSpriteImage, 4);
 
     PlayN.keyboard().setListener(new Keyboard.Adapter() {
         @Override
@@ -98,11 +95,10 @@ public class HappyBirthday implements Game {
     }
   }
 
-  private Player[] createPlayers(Image... images) {
-    final Player[] players = new Player[images.length];
-    int i = 0;
-    for (Image image : images) {
-      players[i++] = new Player(image, graphics(), fields[0], i);
+  private Player[] createPlayers(Image sprite, int numPlayers) {
+    final Player[] players = new Player[numPlayers];
+    for (int i=0; i<numPlayers; i++) {
+      players[i] = new Player(sprite, graphics(), fields[0], i, numPlayers);
     }
     return players;
   }
