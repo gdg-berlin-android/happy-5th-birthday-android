@@ -19,13 +19,13 @@ package devfest.core;
 import static playn.core.PlayN.assets;
 import static playn.core.PlayN.graphics;
 import static playn.core.PlayN.platformType;
+
 import java.util.Random;
+
 import playn.core.Game;
 import playn.core.Image;
 import playn.core.ImageLayer;
-import playn.core.Key;
-import playn.core.Keyboard;
-import playn.core.Keyboard.Event;
+import playn.core.Layer;
 import playn.core.Platform.Type;
 import playn.core.PlayN;
 import playn.core.Pointer;
@@ -39,6 +39,8 @@ public class HappyBirthday implements Game {
   Player[] players;
   float cumulativDelta;
   int jumps;
+  int jumpsDiced;
+  Dice dice;
 
   @Override
   public void init() {
@@ -53,6 +55,7 @@ public class HappyBirthday implements Game {
     // Load assets
     final Image bgImage = assets().getImage("images/map.jpg");
     final Image playerSpriteImage = assets().getImage("images/player.png");
+    final Image diceSpriteImage = assets().getImage("images/dice.png");
 
     // Fit to the available screen without stretching
     graphics().rootLayer().setScale(
@@ -61,26 +64,20 @@ public class HappyBirthday implements Game {
     // Add the playing field as background
     ImageLayer bgLayer = graphics().createImageLayer(bgImage);
     graphics().rootLayer().add(bgLayer);
-
+    
+    dice = new Dice(diceSpriteImage);
+    dice.layer().setTranslation(1700, 50);
+    
     players = createPlayers(playerSpriteImage, 4);
-
-    PlayN.keyboard().setListener(new Keyboard.Adapter() {
-        @Override
-        public void onKeyDown(final Event event) {
-          if ((event.key() == Key.UP) || (event.key() == Key.DOWN) || (event.key() == Key.LEFT) ||
-              (event.key() == Key.RIGHT)) {
-            checkPlayer();
-          }
-        }
-      });
 
     PlayN.pointer().setListener(new Pointer.Adapter() {
         @Override
         public void onPointerEnd(final playn.core.Pointer.Event event) {
-          checkPlayer();
+          if (Layer.Util.hitTest(dice.layer(), event)) {
+            checkPlayer();
+          }
         }
       });
-
   }
 
   void checkPlayer() {
@@ -92,6 +89,7 @@ public class HappyBirthday implements Game {
         currentPlayerPosition = 0;
       }
       jumps = rnd.nextInt(6) + 1;
+      jumpsDiced = jumps;
     }
   }
 
@@ -133,6 +131,7 @@ public class HappyBirthday implements Game {
 
   @Override
   public void paint(final float alpha) {
+    dice.paint(currentPlayerPosition + 1, (jumpsDiced != 0) ? jumpsDiced : 1);
   }
 
   @Override

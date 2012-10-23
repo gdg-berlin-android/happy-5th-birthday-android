@@ -2,6 +2,7 @@ package devfest.core;
 
 import static playn.core.PlayN.graphics;
 import playn.core.Image;
+import playn.core.Layer;
 import playn.core.SurfaceLayer;
 
 public class Dice {
@@ -32,6 +33,10 @@ public class Dice {
         diceWidth, diceHeight);
     layer.surface().drawImage(diceSprite, 0, 0, diceWidth, diceHeight, diceWidth * (diceNumber - 1),
         diceHeight, diceWidth, diceHeight);
+  }
+
+  public Layer.HasSize layer() {
+    return layer;
   }
 
 }
