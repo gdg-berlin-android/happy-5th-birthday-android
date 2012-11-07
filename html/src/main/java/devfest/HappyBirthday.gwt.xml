@@ -15,6 +15,7 @@
 -->
 <module rename-to='happybirthday'>
   <inherits name='playn.PlayN'/>
+  <inherits name="tripleplay.TriplePlay"/>
 
   <source path='core'/>
   <source path='html'/>
