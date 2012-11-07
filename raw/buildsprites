@@ -38,3 +38,12 @@ montage \
   wuerfel_5_transparent.png \
   wuerfel_6_transparent.png \
   dice.png
+
+
+montage \
+  -background none \
+  -geometry +0+0 \
+  -tile 2x1 \
+  ring_white.png \
+  ring_white_blue.png \
+  dice_ring.png
