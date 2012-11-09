@@ -14,6 +14,8 @@
  limitations under the License.
 -->
 <module rename-to='happybirthday'>
+    
+  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
   <inherits name='playn.PlayN'/>
   <inherits name="tripleplay.TriplePlay"/>
 

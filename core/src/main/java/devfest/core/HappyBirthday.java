@@ -16,13 +16,16 @@
 
 package devfest.core;
 
+import static devfest.core.Native.settingsDialog;
 import static playn.core.PlayN.graphics;
+import static playn.core.PlayN.log;
 import static playn.core.PlayN.mouse;
 import static playn.core.PlayN.platformType;
 import static playn.core.PlayN.touch;
 import playn.core.Game;
 import playn.core.Platform.Type;
 import devfest.core.Dice.DiceListener;
+import devfest.core.SettingsDialog.Settings;
 
 /**
  * Main game class.
@@ -61,6 +64,13 @@ public class HappyBirthday implements Game {
       }
     });
     assets.load();
+
+    settingsDialog().open(new SettingsDialog.Listener() {
+      @Override
+      public void onSettingsDialogClosed(final Settings settings) {
+        log().debug("game settings: " + settings);
+      }
+    });
   }
 
   @Override
