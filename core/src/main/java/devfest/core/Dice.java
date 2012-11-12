@@ -160,7 +160,7 @@ class Dice {
    * Set a random dice value between inclusive 1 and 6.
    */
   private int randomValue() {
-    int value = (int) (random() * (6 - 1) + 1);
+    int value = (int) (random() * 6 + 1);
     valueLayer.setImage(diceSprite.subImage(diceWidth * (value - 1), diceHeight, diceWidth, diceHeight));
     return value;
   }
