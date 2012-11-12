@@ -106,8 +106,8 @@ class Dice {
 
     GroupLayer layer = graphics().createGroupLayer();
     layer.setScale(0.5f);
-    layer.setTranslation(graphics().width() - graphics().width() / 4, graphics().height()
-        - graphics().height() / 2);
+    layer.setOrigin(ringWidth / 2, ringHeight / 2);
+    layer.setTranslation(graphics().width() - ringWidth / 4, graphics().height() - graphics().height() / 2);
     graphics().rootLayer().add(layer);
 
     layer.add(ringLayer);
