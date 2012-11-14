@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="setting_player">%1$s Menschen (Du)</string>
+  <string name="setting_computer">%1$s Droid</string>
+  <string name="setting_title">Einstellungen</string>
+  <string name="setting_start">Starten</string>
+  <string name="menu_restart">Neustart</string>
+  
+</resources>

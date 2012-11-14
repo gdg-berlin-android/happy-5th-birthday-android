@@ -41,6 +41,7 @@ public class AndroidSettingsDialog implements SettingsDialog {
    * The activity in which the game runs.
    */
   private final GameActivity activity;
+  private Listener listener;
 
   /**
    * Construct a new {@link AndroidSettingsDialog}.
@@ -53,6 +54,11 @@ public class AndroidSettingsDialog implements SettingsDialog {
 
   @Override
   public void open(final Listener listener) {
+    this.listener = listener;
+    startDialog();
+  }
+
+  public void startDialog() {
     activity.runOnUiThread(new Runnable() {
         @Override
         public void run() {
@@ -83,10 +89,10 @@ public class AndroidSettingsDialog implements SettingsDialog {
           linear.addView(tv2, param);
 
           AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-          dialog.setMessage(TITLE);
+          dialog.setMessage(R.string.setting_title);
           dialog.setView(linear);
 
-          dialog.setPositiveButton("START", new DialogInterface.OnClickListener() {
+          dialog.setPositiveButton(R.string.setting_start, new DialogInterface.OnClickListener() {
               @Override
               public void onClick(final DialogInterface dialog, final int which) {
                 listener.onSettingsDialogClosed(
