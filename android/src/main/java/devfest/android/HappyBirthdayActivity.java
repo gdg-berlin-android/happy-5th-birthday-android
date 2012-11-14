@@ -64,10 +64,10 @@ public class HappyBirthdayActivity extends GameActivity {
 
   @Override
   protected void onDestroy() {
-    super.onDestroy();
-
+    settingsDialog = null;
     System.runFinalizersOnExit(true);
     System.exit(0);
+    super.onDestroy();
   }
 
 }
