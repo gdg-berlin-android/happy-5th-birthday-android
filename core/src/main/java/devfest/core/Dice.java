@@ -36,6 +36,11 @@ class Dice {
   }
 
   /**
+   * Scene node holding the dice.
+   */
+  private final GroupLayer layer;
+
+  /**
    * Ring sprite.
    * 
    * 2 rings in one row.
@@ -94,6 +99,7 @@ class Dice {
    * Construct a new {@link Dice}.
    */
   Dice(final Image ringSprite, final Image diceSprite) {
+    this.layer = graphics().createGroupLayer();
     this.ringSprite = ringSprite;
     this.ringWidth = ringSprite.width() / 2;
     this.ringHeight = ringSprite.height();
@@ -104,7 +110,6 @@ class Dice {
     this.colorLayer = graphics().createImageLayer();
     this.valueLayer = graphics().createImageLayer();
 
-    GroupLayer layer = graphics().createGroupLayer();
     layer.setScale(0.5f);
     layer.setOrigin(ringWidth / 2, ringHeight / 2);
     layer.setTranslation(graphics().width() - ringWidth / 4, graphics().height() - graphics().height() / 2);
@@ -120,6 +125,7 @@ class Dice {
     layer.add(diceLayer);
 
     // Set initial values
+    visible(false);
     enabled(true);
     color(Droid.Color.BLUE);
     randomValue();
@@ -137,6 +143,13 @@ class Dice {
         }
       }
     });
+  }
+
+  /**
+   * Set the visible state of the dice.
+   */
+  void visible(final boolean visible) {
+    layer.setVisible(visible);
   }
 
   /**

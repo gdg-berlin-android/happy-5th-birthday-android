@@ -18,10 +18,13 @@ package devfest.core;
 
 import static devfest.core.Native.settingsDialog;
 import static playn.core.PlayN.graphics;
-import static playn.core.PlayN.log;
 import static playn.core.PlayN.mouse;
 import static playn.core.PlayN.platformType;
 import static playn.core.PlayN.touch;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import playn.core.Game;
 import playn.core.Platform.Type;
 import devfest.core.Dice.DiceListener;
@@ -47,6 +50,16 @@ public class HappyBirthday implements Game {
    */
   private Dice dice;
 
+  /**
+   * Active players.
+   */
+  private List<Player> players;
+
+  /**
+   * The current player.
+   */
+  private Player currentPlayer;
+
   @Override
   public void init() {
     if (platformType() != Type.JAVA) {
@@ -64,13 +77,6 @@ public class HappyBirthday implements Game {
       }
     });
     assets.load();
-
-    settingsDialog().open(new SettingsDialog.Listener() {
-      @Override
-      public void onSettingsDialogClosed(final Settings settings) {
-        log().debug("game settings: " + settings);
-      }
-    });
   }
 
   @Override
@@ -102,17 +108,43 @@ public class HappyBirthday implements Game {
     BoardGestures boardGestures = new BoardGestures(board);
     touch().setListener(boardGestures);
     mouse().setListener(boardGestures);
-
     dice = new Dice(assets.diceRingSprite(), assets.diceSprite());
+    players = new LinkedList<Player>();
+
+    settingsDialog().open(new SettingsDialog.Listener() {
+      @Override
+      public void onSettingsDialogClosed(final Settings settings) {
+        assert settings.playerCount >= 1 && settings.playerCount <= 4;
+        players.clear();
+        for (int i = 0; i < 4 && i < settings.playerCount; i++) {
+          Player player = new Player(Droid.Color.values()[i]);
+          board.initDroid(player.color());
+          players.add(player);
+        }
+
+        currentPlayer = players.get(0);
+        dice.color(currentPlayer.color());
+        dice.visible(true);
+      }
+    });
+
     dice.addListener(new DiceListener() {
       @Override
       public void onDiced(final int value) {
         dice.enabled(false);
-        board.moveDroid(value, new Board.TurnListener() {
+        board.moveDroid(currentPlayer.color(), value, new Board.TurnListener() {
           @Override
-          public void onTurnOver(final Droid nextDroid) {
-            dice.color(nextDroid.color());
-            dice.enabled(true);
+          public void onTurnOver() {
+            int nextDroidId = currentPlayer.color().id + 1;
+            if (nextDroidId >= Droid.Color.values().length || nextDroidId == players.size()) {
+              nextDroidId = 0;
+            }
+            
+            currentPlayer = players.get(nextDroidId);
+            dice.color(currentPlayer.color());
+            if (currentPlayer.human()) {
+              dice.enabled(true);
+            }
           }
         });
       }

@@ -18,6 +18,10 @@ package devfest.core;
 
 import static playn.core.Layer.Util.screenToLayer;
 import static playn.core.PlayN.graphics;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import playn.core.GroupLayer;
 import playn.core.Image;
 import playn.core.ImageLayer;
@@ -36,10 +40,8 @@ class Board {
 
     /**
      * The turn/animation is over.
-     * 
-     * @param nextDroid Droid who's next.
      */
-    void onTurnOver(Droid nextDroid);
+    void onTurnOver();
 
   }
 
@@ -76,11 +78,6 @@ class Board {
   };
 
   /**
-   * All droids.
-   */
-  private final static Droid[] DROIDS = new Droid[Droid.Color.values().length];
-
-  /**
    * The update rate the game targets.
    * 
    * <p>
@@ -110,14 +107,14 @@ class Board {
   private final ImageLayer imageLayer;
 
   /**
+   * All droids.
+   */
+  private final Map<Droid.Color, Droid> droids;
+
+  /**
    * Milliseconds passed in the game.
    */
   protected float elapsed;
-
-  /**
-   * The active droid.
-   */
-  private Droid currentDroid;
 
   /**
    * Construct a new {@link Board}.
@@ -132,6 +129,7 @@ class Board {
     this.boardImage = boardImage;
     this.layer = graphics().createGroupLayer();
     this.imageLayer = graphics().createImageLayer(boardImage);
+    this.droids = new HashMap<Droid.Color, Droid>();
     this.elapsed = 0;
 
     graphics().rootLayer().add(layer);
@@ -140,10 +138,12 @@ class Board {
     layer.setTranslation(left(), bottom());
 
     for (Droid.Color color : Droid.Color.values()) {
-      DROIDS[color.id] = new Droid(droidSprite, color, FIELDS[0]);
-      layer.add(DROIDS[color.id].layer());
+      Droid droid = new Droid(droidSprite, color, FIELDS[0]);
+      droids.put(color, droid);
+      droid.layer().setVisible(false);
+      layer.add(droid.layer());
     }
-    this.currentDroid = DROIDS[Droid.Color.BLUE.id];
+    // this.currentDroid = droids.get(Droid.Color.BLUE);
   }
 
   /**
@@ -271,39 +271,45 @@ class Board {
   }
 
   /**
+   * Initialize the droid related to the given color.
+   * 
+   * <p>
+   * The droid will be made visible and positioned at the start.
+   * </p>
+   */
+  void initDroid(final Droid.Color color) {
+    Droid droid = droids.get(color);
+    droid.layer().setVisible(true);
+    droid.position(FIELDS[0]);
+  }
+
+  /**
    * Execute a turn on the current droid with the given value.
    * 
    * @param value The number of fields the droid moves.
    * @param gameplayListener Callback which gets executed when a turn is done.
    */
-  void moveDroid(final int value, final TurnListener gameplayListener) {
+  void moveDroid(final Droid.Color color, final int value, final TurnListener gameplayListener) {
+    final Droid droid = droids.get(color);
     Animator animation = animator.delay(0.5f).then();
 
     // Build the animation for the fields.
     for (int i = value; i != 0; i--) {
-      currentDroid.position(FIELDS[currentDroid.position().id() + 1]);
-      animation = animation.tweenTranslation(currentDroid.layer()).in(0.5f).to(
-          FIELDS[currentDroid.position().id()]).easeInOut().then();
+      droid.position(FIELDS[droid.position().id() + 1]);
+      animation = animation.tweenTranslation(droid.layer()).in(0.5f).to(FIELDS[droid.position().id()]).easeInOut().then();
     }
 
     // Add the shortcut/trap if needed
-    if (currentDroid.position().link() != -1) {
-      currentDroid.position(FIELDS[currentDroid.position().link()]);
-      animation = animation.tweenTranslation(currentDroid.layer()).in(0.5f).to(
-          FIELDS[currentDroid.position().id()]).easeInOut().then();
+    if (droid.position().link() != -1) {
+      droid.position(FIELDS[droid.position().link()]);
+      animation = animation.tweenTranslation(droid.layer()).in(0.5f).to(FIELDS[droid.position().id()]).easeInOut().then();
     }
 
     // Execute the callback
     animation.delay(0.5f).then().action(new Runnable() {
       @Override
       public void run() {
-        int nextDroidId = currentDroid.color().id + 1;
-        if (nextDroidId >= Droid.Color.values().length) {
-          nextDroidId = 0;
-        }
-
-        currentDroid = DROIDS[nextDroidId];
-        gameplayListener.onTurnOver(currentDroid);
+        gameplayListener.onTurnOver();
       }
     });
   }
