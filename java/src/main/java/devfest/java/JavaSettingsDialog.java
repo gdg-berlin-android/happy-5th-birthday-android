@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import devfest.core.SettingsDialog;
 
@@ -33,23 +34,28 @@ public class JavaSettingsDialog implements SettingsDialog {
 
   @Override
   public void open(final Listener listener) {
-    final JDialog dialog = new JDialog(new JFrame(), TITLE, true);
-    dialog.setSize(50, 100);
-    dialog.setLocationRelativeTo(null);
-    final JComboBox comboBox = new JComboBox(new String[] {
-        "1", "2", "3", "4"
-    });
-    dialog.getContentPane().add(comboBox);
-    JButton ok = new JButton("Ok");
-    dialog.getContentPane().add(ok, "South");
-    ok.addActionListener(new ActionListener() {
+    SwingUtilities.invokeLater(new Runnable() {
       @Override
-      public void actionPerformed(final ActionEvent evt) {
-        listener.onSettingsDialogClosed(new Settings(Integer.valueOf((String) comboBox.getSelectedItem())));
-        dialog.setVisible(false);
+      public void run() {
+        final JDialog dialog = new JDialog(new JFrame(), TITLE, true);
+        dialog.setSize(50, 100);
+        dialog.setLocationRelativeTo(null);
+        final JComboBox comboBox = new JComboBox(new String[] {
+            "1", "2", "3", "4"
+        });
+        dialog.getContentPane().add(comboBox);
+        JButton ok = new JButton("Ok");
+        dialog.getContentPane().add(ok, "South");
+        ok.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(final ActionEvent evt) {
+            listener.onSettingsDialogClosed(new Settings(Integer.valueOf((String) comboBox.getSelectedItem())));
+            dialog.setVisible(false);
+          }
+        });
+        dialog.setVisible(true);
       }
     });
-    dialog.setVisible(true);
   }
 
 }
