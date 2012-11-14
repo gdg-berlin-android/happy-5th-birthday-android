@@ -18,7 +18,6 @@ package devfest.android;
 
 import playn.android.GameActivity;
 import playn.core.PlayN;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -52,22 +51,4 @@ public class HappyBirthdayActivity extends GameActivity {
     }
     return super.onOptionsItemSelected(item);
   }
-
-  @Override
-  public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-    if (keyCode == KeyEvent.KEYCODE_BACK) {
-      finish();
-    }
-
-    return super.onKeyDown(keyCode, event);
-  }
-
-  @Override
-  protected void onDestroy() {
-    settingsDialog = null;
-    System.runFinalizersOnExit(true);
-    System.exit(0);
-    super.onDestroy();
-  }
-
 }

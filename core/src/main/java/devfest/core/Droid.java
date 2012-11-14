@@ -1,12 +1,12 @@
 /*
  * Copyright 2012 c-base e.V.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy
  * of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -20,20 +20,19 @@ import static playn.core.PlayN.graphics;
 import playn.core.Image;
 import playn.core.ImageLayer;
 
+
 /**
  * A colored game figure which each player controls.
  */
 class Droid {
-
   /**
    * Possible colors for each droid.
-   * 
+   *
    * <p>
    * Must match the droids in the sprite.
    * </p>
    */
   enum Color {
-
     BLUE(0), PURPLE(1), RED(2), YELLOW(3);
 
     /**
@@ -43,7 +42,7 @@ class Droid {
 
     /**
      * Construct a new {@link Color}.
-     * 
+     *
      * @param id Number of the droid in the sprite
      */
     private Color(final int id) {
@@ -69,7 +68,7 @@ class Droid {
 
   /**
    * Construct a new {@link Droid}.
-   * 
+   *
    * @param droidSprite Sprite which contains all colored droids.
    * @param color Color of the droid.
    * @param startPosition Where the droid starts.
@@ -83,7 +82,16 @@ class Droid {
     float droidHeight = droidSprite.height();
 
     layer.setImage(droidSprite.subImage(droidWidth * color.id, 0, droidWidth, droidHeight));
-    layer.setOrigin(droidWidth / 2, droidHeight - droidHeight / 6);
+    layer.setOrigin(droidWidth / 2, droidHeight - (droidHeight / 6));
+    translateToPosition();
+  }
+
+  public void translateToPosition(Field field) {
+    position = field;
+    translateToPosition();
+  }
+
+  private void translateToPosition() {
     layer.setTranslation(position.x(), position.y());
   }
 
